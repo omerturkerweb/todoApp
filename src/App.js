@@ -30,6 +30,8 @@ function App() {
                   
            },[deleteItemId])
 
+              
+
            useEffect( () => {
             console.log(note)
             console.log(doneItemId)
@@ -40,11 +42,13 @@ function App() {
                       data[doneItemId-1].status = false
                       setNote(data)
                       setDoneItemId(0)
-                    }
+                        }
+
                     else if(data[doneItemId-1].status == false) { 
                     data[doneItemId-1].status=true;
                     setNote(data)
                     setDoneItemId(0)
+                   
                     }
                   }
                   

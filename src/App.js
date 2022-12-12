@@ -1,129 +1,96 @@
  import React,{useEffect, useState} from "react";
+ import { SpinnerDotted } from "spinners-react";
+ import Todo from "./Components/Todo";
+
+
 function App() {
 
-      const [note , setNote] =  useState([])
-      const [noteId , setNoteId] = useState(0)
-      const [deleteItemId , setDeleteItem] = useState(0)
-      const [doneItemId , setDoneItemId] = useState(0)
-          
-        const addToDoHandle = e => {
-          if(document.querySelector('.todo-input').value !== ""){
-            e.preventDefault();
-            let noteNumber = noteId;
-            noteNumber += 1;
-            setNoteId(noteNumber)
-            const toDoToAdd = document.querySelector('.todo-input').value;
-            setNote( note => [...note , {
-              id : noteNumber,
-              content : toDoToAdd,
-              status : false
-            }])
-            document.querySelector('.todo-input').value = "";
-          }
-          
-      
-        }
-           useEffect( () => {
-                  const data = note;
-                  const dataLeft = data.filter(item => item.id != deleteItemId)
-                  setNote(dataLeft)
-                  
-           },[deleteItemId])
+      const [todo , setTodo ] = useState([])
+      const [remove , setRemove]= useState([])
+      const [done , setDone] = useState([])
+      const [todoId , setToDoId] = useState(0)
 
-              
-
-           useEffect( () => {
-            console.log(note)
-            console.log(doneItemId)
-                  const data = note;
-
-                  if(doneItemId) {
-                    if(data[doneItemId-1].status == true) {
-                      data[doneItemId-1].status = false
-                      setNote(data)
-                      setDoneItemId(0)
-                        }
-
-                    else if(data[doneItemId-1].status == false) { 
-                    data[doneItemId-1].status=true;
-                    setNote(data)
-                    setDoneItemId(0)
-                   
-                    }
+      useEffect( () => {
+              if(done.length>0 && done.text !== '') {
+                  let current = todo.find(item => item.text === done)
+                  if(current.isDone) {
+                    current.isDone = false;
+                    setTodo(todo => [...todo.filter(item => item.text !== done),current])
+                    setDone('')
                   }
-                  
-
-                },[doneItemId])
-           
-       const AddNotes = ({content,status,delId,doneId,id}) =>  {
-
-        const deleteHandler = (e , state) => {
-           delId(document.getElementById(id).getAttribute('id'))
-        }
-        const doneHandler = (e,state) => {
-             doneId(document.getElementById(id).getAttribute('id'))
-        }
-      
-        return(
-    
-             <div className="note" id={id}>
-                <div className="content">
-                  {
-                    status
-                    ?<div className="content-text done-text"><li>{content}</li></div>
-                    :<div className="content-text"><li>{content}</li></div>
+                  else if(!current.isDone) {
+                    current.isDone = true;
+                    setTodo(todo => [...todo.filter(item=> item.text !== done),current])
+                    setDone('')
                   }
-                    
-                </div>
-               
-                <div className="actions">
-                    <i onClick={e => deleteHandler(e)} className="fa-sharp fa-solid fa-xmark remove"></i>
-                    <i onClick={e => doneHandler(e)} className="fa-solid fa-check done"></i>
-                </div>
                  
-            
-              </div>
-         
-             
-        )
+              }       
+      },[todo , done])
+
+      const addTodo =  (e) => {
+     
+        e.preventDefault();
+
+          let todoInput = document.querySelector('.todo-input');
+          if(todoInput.value !== '') {
+            let idCount = todoId;
+            idCount++;
+            setToDoId(idCount)
+            setTodo([...todo , {
+              text:todoInput.value,
+              id :todoId,
+              isDone : false
+              
+            }])
+            todoInput.value=''
+            console.log(todo)
+          }
        }
+        useEffect(() => { 
+                setTodo(todo =>[...todo.filter(item => item.text !== remove)])
+                setRemove('')
+                
+        },[remove])
+
+     
+           
 
   return (
     <div className="App">
         <div className="container">
+        
           <div className="header">
             <h2>To Do List</h2>
           </div>
           <div className="toDo">
             
-            <input required className="todo-input" placeholder="write something to do..." type='text'/>
+            <input  required className="todo-input" placeholder="write something to do..." type='text'/>
           </div>
+            
+                {
+                  todo.length>0 
+                  ?<div className="todos">
+                    {
+                      todo.map((item,index) => {
+                       return  <Todo
+                        key={index}
+                        item = {item}
+                        setRemove = {setRemove}
+                        setDone = {setDone}
+                        >
 
-                  {
-                    note.length > 0
-                    ?<div className="all-notes">
-                        {
-                          note.map( item => {
-                            return(
-                              <AddNotes
-                                id = {item.id}
-                                key={item.id}
-                                content={item.content}
-                                status={item.status}
-                                delId = {id => setDeleteItem(id)}
-                                doneId = {id => setDoneItemId(id)}
-                              />
-                            )
-                          })
-                        }
+                   
+                        </Todo>
+                      })
+                    }
+                  </div>
+                  :<div className="todo-empty">
+                    <SpinnerDotted className="todo-spinner" size={50} thickness={69} speed={100} color="#36ad47"/>
+                    <span className="empty-todo-text">there is nothing to do ...</span>
                     </div>
-                     
-                    
-                    :<div className="null-todo"> there is nothing here to do ... <i className="fa-solid fa-clipboard"></i> </div>
-                  }
-
+                }
           <div className="addToDo">
-            <button  onClick={e=> addToDoHandle(e)}>Add to List</button>
+            <button onClick={addTodo}>Add to List</button>
           </div>
         
         </div>  

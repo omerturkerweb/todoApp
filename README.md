@@ -1,3 +1,18 @@
+
+# todo App 
+
+I made it todo App with React.
+
+![ScreenShot](https://img001.prntscr.com/file/img001/2_4Jx9xTR4Sfpcuy49rUeg.jpg)
+
+
+
+    
+## Used Technologies
+
+- React
+- CSS3
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

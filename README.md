@@ -1,9 +1,11 @@
 
 # todo App 
 
-I made it todo App with React.
+I made it simple todo App with React.
 
-![ScreenShot](https://img001.prntscr.com/file/img001/2_4Jx9xTR4Sfpcuy49rUeg.jpg)
+# Screen Shots
+![ScreenShot](https://img001.prntscr.com/file/img001/DBUJfZ_3R4y6tF_RmWCytw.png)
+![ScreenShot](https://img001.prntscr.com/file/img001/BYnUYDhhSQy2XTTI4wC2hA.png)
 
 
 
@@ -12,6 +14,7 @@ I made it todo App with React.
 
 - React
 - CSS3
+- React Spinner (https://github.com/adexin/spinners-react)
 
 # Getting Started with Create React App
 
